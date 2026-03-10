@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { BookOpen, Users, Video, Plus, LogOut, Trash2, Edit, Play, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Users, Video, Plus, LogOut, Trash2, Play, CheckCircle2, User, ArrowLeft, GraduationCap, BarChart3, Search } from 'lucide-react';
 
 export default function LMSApp() {
   const [user, setUser] = useState(null);
@@ -28,6 +28,7 @@ export default function LMSApp() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [showProfile, setShowProfile] = useState(false);
 
   // Auth form state
   const [authForm, setAuthForm] = useState({
@@ -380,88 +381,95 @@ export default function LMSApp() {
   // Auth Screen
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center mb-4">
-              <div className="bg-primary rounded-full p-3">
-                <BookOpen className="h-8 w-8 text-primary-foreground" />
-              </div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Logo mark */}
+          <div className="flex flex-col items-center mb-6">
+            <div className="bg-primary rounded-xl p-3 shadow-sm mb-3">
+              <BookOpen className="h-8 w-8 text-primary-foreground" />
             </div>
-            <CardTitle className="text-2xl text-center">LMS Marketplace</CardTitle>
-            <CardDescription className="text-center">
-              {authMode === 'login' ? 'Sign in to your account' : 'Create a new account'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleAuth} className="space-y-4">
-              {authMode === 'register' && (
+            <h1 className="text-2xl font-bold text-slate-900">LMS Marketplace</h1>
+          </div>
+
+          <Card className="shadow-xl shadow-indigo-100 border-0">
+            <CardHeader className="space-y-1 pb-4">
+              <CardTitle className="text-xl text-center">
+                {authMode === 'login' ? 'Welcome back 👋' : 'Create your account'}
+              </CardTitle>
+              <CardDescription className="text-center">
+                {authMode === 'login' ? 'Sign in to continue learning' : 'Join thousands of learners today'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleAuth} className="space-y-4">
+                {authMode === 'register' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input
+                      id="name"
+                      placeholder="John Doe"
+                      value={authForm.name}
+                      onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                      required
+                    />
+                  </div>
+                )}
+
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
-                    id="name"
-                    placeholder="John Doe"
-                    value={authForm.name}
-                    onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={authForm.email}
+                    onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
                     required
                   />
                 </div>
-              )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={authForm.email}
-                  onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={authForm.password}
-                  onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-                  required
-                />
-              </div>
-
-              {authMode === 'register' && (
                 <div className="space-y-2">
-                  <Label htmlFor="role">I am a</Label>
-                  <Select value={authForm.role} onValueChange={(value) => setAuthForm({ ...authForm, role: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="student">Student</SelectItem>
-                      <SelectItem value="instructor">Instructor</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={authForm.password}
+                    onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+                    required
+                  />
                 </div>
-              )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Please wait...' : authMode === 'login' ? 'Sign In' : 'Sign Up'}
+                {authMode === 'register' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="role">I am a</Label>
+                    <Select value={authForm.role} onValueChange={(value) => setAuthForm({ ...authForm, role: value })}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="student">Student</SelectItem>
+                        <SelectItem value="instructor">Instructor</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Please wait...' : authMode === 'login' ? 'Sign In' : 'Create Account'}
+                </Button>
+              </form>
+            </CardContent>
+            <CardFooter className="pt-0">
+              <Button
+                variant="link"
+                className="w-full text-primary"
+                onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
+              >
+                {authMode === 'login' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
               </Button>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <Button
-              variant="link"
-              className="w-full"
-              onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
-            >
-              {authMode === 'login' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-            </Button>
-          </CardFooter>
-        </Card>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -470,22 +478,22 @@ export default function LMSApp() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-card">
+      <header className="bg-white border-b border-border shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-primary rounded-lg p-2">
               <BookOpen className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">LMS Marketplace</h1>
+              <h1 className="text-xl font-bold text-slate-900">LMS Marketplace</h1>
               <p className="text-xs text-muted-foreground">{user.role === 'instructor' ? 'Instructor Portal' : 'Student Portal'}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{user.name}</p>
-              <Badge variant="outline" className="text-xs">{user.role}</Badge>
-            </div>
+          <div className="flex items-center gap-3">
+            <Button variant="outline" size="sm" onClick={() => setShowProfile(true)}>
+              <User className="h-4 w-4 mr-2" />
+              Profile
+            </Button>
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -496,200 +504,351 @@ export default function LMSApp() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {user.role === 'instructor' ? (
-          // Instructor View
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">My Courses</h2>
-                <p className="text-muted-foreground">Manage your courses and lessons</p>
-              </div>
-              <Button onClick={() => setShowCourseModal(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Course
+
+        {/* ===== PROFILE VIEW ===== */}
+        {showProfile ? (
+          <div className="space-y-6 max-w-3xl mx-auto">
+            <div className="flex items-center gap-4">
+              <Button variant="outline" size="sm" onClick={() => setShowProfile(false)}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
               </Button>
+              <h2 className="text-3xl font-bold">My Profile</h2>
             </div>
 
-            {courses.length === 0 ? (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-12">
-                  <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No courses yet. Create your first course!</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses.map((course) => (
-                  <Card key={course.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(course.id)}>
-                    <CardHeader>
-                      <div className="aspect-video bg-slate-100 rounded-md mb-3 flex items-center justify-center overflow-hidden">
-                        {getCourseThumbnail(course) ? (
-                          <img src={getCourseThumbnail(course)} alt={course.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
-                        ) : null}
-                        <span style={{ display: getCourseThumbnail(course) ? 'none' : 'flex' }} className="w-full h-full items-center justify-center">
-                          <Video className="h-12 w-12 text-muted-foreground" />
-                        </span>
+            {/* Profile card */}
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-6">
+                  <div className="bg-primary rounded-full p-5 flex items-center justify-center">
+                    {user.role === 'student'
+                      ? <GraduationCap className="h-10 w-10 text-primary-foreground" />
+                      : <BookOpen className="h-10 w-10 text-primary-foreground" />}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">{user.name}</h3>
+                    <p className="text-muted-foreground">{user.email}</p>
+                    <Badge className="mt-1 capitalize">{user.role}</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* ---- STUDENT PROFILE ---- */}
+            {user.role === 'student' && (
+              <>
+                {/* Stats row */}
+                <div className="grid grid-cols-3 gap-4">
+                  <Card>
+                    <CardContent className="pt-6 text-center">
+                      <p className="text-4xl font-bold text-slate-800">{myCourses.length}</p>
+                      <p className="text-sm text-muted-foreground mt-1">Enrolled</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-6 text-center">
+                      <p className="text-4xl font-bold text-slate-800">{myCourses.filter(c => c.progress === 100).length}</p>
+                      <p className="text-sm text-muted-foreground mt-1">Completed</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-6 text-center">
+                      <p className="text-4xl font-bold text-slate-800">
+                        {myCourses.length > 0
+                          ? Math.round(myCourses.reduce((a, c) => a + c.progress, 0) / myCourses.length)
+                          : 0}%
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">Avg Progress</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Course progress list */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5" /> My Courses
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-5">
+                    {myCourses.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-4">No courses enrolled yet.</p>
+                    ) : myCourses.map(item => (
+                      <div key={item.id}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-medium">{item.course?.title}</span>
+                          <div className="flex items-center gap-2">
+                            {item.progress === 100 && <CheckCircle2 className="h-4 w-4 text-green-500" />}
+                            <span className="text-sm font-semibold">{item.progress}%</span>
+                          </div>
+                        </div>
+                        <Progress value={item.progress} className="h-2" />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {item.completedLessons} of {item.totalLessons} lessons completed
+                        </p>
                       </div>
-                      <CardTitle className="line-clamp-1">{course.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">{course.description}</CardDescription>
-                    </CardHeader>
-                    <CardFooter className="flex justify-between">
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
+                    ))}
+                  </CardContent>
+                </Card>
+              </>
+            )}
+
+            {/* ---- INSTRUCTOR PROFILE ---- */}
+            {user.role === 'instructor' && (
+              <>
+                {/* Stats row */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Card>
+                    <CardContent className="pt-6 text-center">
+                      <p className="text-4xl font-bold text-slate-800">{courses.length}</p>
+                      <p className="text-sm text-muted-foreground mt-1">Courses Created</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="pt-6 text-center">
+                      <p className="text-4xl font-bold text-slate-800">{courses.reduce((a, c) => a + (c.enrollmentCount || 0), 0)}</p>
+                      <p className="text-sm text-muted-foreground mt-1">Total Students</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Course stats list */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5" /> Your Courses
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {courses.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-4">No courses created yet.</p>
+                    ) : courses.map(course => (
+                      <div key={course.id} className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent cursor-pointer" onClick={() => { setShowProfile(false); fetchCourseDetails(course.id); }}>
+                        <div>
+                          <p className="font-medium">{course.title}</p>
+                          <Badge variant="outline" className="text-xs mt-1">{course.category}</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground">
                           <Users className="h-4 w-4" />
-                          <span>{course.enrollmentCount || 0}</span>
+                          <span className="font-semibold">{course.enrollmentCount || 0} students</span>
                         </div>
                       </div>
-                      <Badge>{course.category}</Badge>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                <Button className="w-full" onClick={() => { setShowProfile(false); setShowCourseModal(true); }}>
+                  <Plus className="h-4 w-4 mr-2" /> Create New Course
+                </Button>
+              </>
             )}
           </div>
         ) : (
-          // Student View
-          <Tabs defaultValue="browse" className="space-y-6">
-            <TabsList>
-              <TabsTrigger value="browse">Browse Courses</TabsTrigger>
-              <TabsTrigger value="my-courses">My Courses</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="browse" className="space-y-6">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Explore Courses</h2>
-                <p className="text-muted-foreground">Discover and enroll in courses</p>
-              </div>
-
-              {/* Search and Filter */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <Input
-                    placeholder="Search courses..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full"
-                  />
+          user.role === 'instructor' ? (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-slate-900">My Courses</h2>
+                  <p className="text-muted-foreground">Manage your courses and lessons</p>
                 </div>
-                <Select value={filterCategory} onValueChange={setFilterCategory}>
-                  <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="Programming">Programming</SelectItem>
-                    <SelectItem value="Design">Design</SelectItem>
-                    <SelectItem value="Business">Business</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Button onClick={() => setShowCourseModal(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Course
+                </Button>
               </div>
 
-              {(() => {
-                const filteredCourses = courses.filter(course => {
-                  const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    course.description.toLowerCase().includes(searchQuery.toLowerCase());
-                  const matchesCategory = filterCategory === 'all' || course.category === filterCategory;
-                  return matchesSearch && matchesCategory;
-                });
-
-                return (
-                  <>
-                    {filteredCourses.length > 0 && (
-                      <div className="text-sm text-muted-foreground">
-                        Showing {filteredCourses.length} {filteredCourses.length === 1 ? 'course' : 'courses'}
-                      </div>
-                    )}
-
-                    {filteredCourses.length === 0 ? (
-                      <Card>
-                        <CardContent className="flex flex-col items-center justify-center py-12">
-                          <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-                          <p className="text-muted-foreground">
-                            {courses.length === 0 ? 'No courses available yet.' : 'No courses match your search.'}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredCourses.map((course) => (
-                          <Card key={course.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(course.id)}>
-                            <CardHeader>
-                              <div className="aspect-video bg-slate-100 rounded-md mb-3 flex items-center justify-center overflow-hidden">
-                                {getCourseThumbnail(course) ? (
-                                  <img src={getCourseThumbnail(course)} alt={course.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
-                                ) : null}
-                                <span style={{ display: getCourseThumbnail(course) ? 'none' : 'flex' }} className="w-full h-full items-center justify-center">
-                                  <Video className="h-12 w-12 text-muted-foreground" />
-                                </span>
-                              </div>
-                              <CardTitle className="line-clamp-1">{course.title}</CardTitle>
-                              <CardDescription className="line-clamp-2">{course.description}</CardDescription>
-                            </CardHeader>
-                            <CardFooter className="flex justify-between">
-                              <div className="text-sm text-muted-foreground">
-                                By {course.instructor_name}
-                              </div>
-                              <Badge>{course.category}</Badge>
-                            </CardFooter>
-                          </Card>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
-            </TabsContent>
-
-            <TabsContent value="my-courses" className="space-y-6">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">My Learning</h2>
-                <p className="text-muted-foreground">Continue your enrolled courses</p>
-              </div>
-
-              {myCourses.length === 0 ? (
+              {courses.length === 0 ? (
                 <Card>
                   <CardContent className="flex flex-col items-center justify-center py-12">
                     <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-                    <p className="text-muted-foreground">You haven&apos;t enrolled in any courses yet.</p>
+                    <p className="text-muted-foreground">No courses yet. Create your first course!</p>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {myCourses.map((item) => (
-                    <Card key={item.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(item.course_id)}>
+                  {courses.map((course) => (
+                    <Card key={course.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(course.id)}>
                       <CardHeader>
                         <div className="aspect-video bg-slate-100 rounded-md mb-3 flex items-center justify-center overflow-hidden">
-                          {item.course?.thumbnail ? (
-                            <img src={item.course.thumbnail} alt={item.course.title} className="w-full h-full object-cover" />
-                          ) : (
+                          {getCourseThumbnail(course) ? (
+                            <img src={getCourseThumbnail(course)} alt={course.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                          ) : null}
+                          <span style={{ display: getCourseThumbnail(course) ? 'none' : 'flex' }} className="w-full h-full items-center justify-center">
                             <Video className="h-12 w-12 text-muted-foreground" />
-                          )}
+                          </span>
                         </div>
-                        <CardTitle className="line-clamp-1">{item.course?.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{item.course?.description}</CardDescription>
+                        <CardTitle className="line-clamp-1">{course.title}</CardTitle>
+                        <CardDescription className="line-clamp-2">{course.description}</CardDescription>
                       </CardHeader>
-                      <CardFooter className="flex flex-col gap-2">
-                        <div className="w-full space-y-1">
-                          <div className="flex justify-between text-sm">
-                            <span>Progress</span>
-                            <span className="font-medium">{item.progress}%</span>
-                          </div>
-                          <Progress value={item.progress} />
+                      <CardFooter className="flex justify-between">
+                        <div className="text-sm text-muted-foreground">
+                          <Users className="h-4 w-4 inline mr-1" />
+                          {course.enrollmentCount || 0} students
                         </div>
-                        <div className="w-full text-xs text-muted-foreground text-center">
-                          {item.completedLessons} of {item.totalLessons} lessons completed
-                        </div>
+                        <Badge className="bg-slate-900 text-slate-50 hover:bg-slate-800 border-0">{course.category}</Badge>
                       </CardFooter>
                     </Card>
                   ))}
                 </div>
               )}
-            </TabsContent>
-          </Tabs>
+            </div>
+          ) : (
+            <Tabs defaultValue="browse" className="space-y-6">
+              <TabsList>
+                <TabsTrigger value="browse">Browse Courses</TabsTrigger>
+                <TabsTrigger value="my-courses">My Courses</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="browse" className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-bold mb-2">Explore Courses</h2>
+                  <p className="text-muted-foreground">Discover and enroll in courses</p>
+                </div>
+
+                {/* Search and Filter */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search courses..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-9"
+                    />
+                  </div>
+                  <Select value={filterCategory} onValueChange={setFilterCategory}>
+                    <SelectTrigger className="w-full sm:w-48">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="Programming">Programming</SelectItem>
+                      <SelectItem value="Design">Design</SelectItem>
+                      <SelectItem value="Business">Business</SelectItem>
+                      <SelectItem value="Marketing">Marketing</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {(() => {
+                  const filteredCourses = courses.filter(course => {
+                    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      course.description.toLowerCase().includes(searchQuery.toLowerCase());
+                    const matchesCategory = filterCategory === 'all' || course.category === filterCategory;
+                    return matchesSearch && matchesCategory;
+                  });
+
+                  return (
+                    <>
+                      {filteredCourses.length > 0 && (
+                        <div className="text-sm text-muted-foreground">
+                          Showing {filteredCourses.length} {filteredCourses.length === 1 ? 'course' : 'courses'}
+                        </div>
+                      )}
+
+                      {filteredCourses.length === 0 ? (
+                        <Card>
+                          <CardContent className="flex flex-col items-center justify-center py-12">
+                            <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
+                            <p className="text-muted-foreground">
+                              {courses.length === 0 ? 'No courses available yet.' : 'No courses match your search.'}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {filteredCourses.map((course) => (
+                            <Card key={course.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(course.id)}>
+                              <CardHeader>
+                                <div className="aspect-video bg-slate-100 rounded-md mb-3 flex items-center justify-center overflow-hidden">
+                                  {getCourseThumbnail(course) ? (
+                                    <img src={getCourseThumbnail(course)} alt={course.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                                  ) : null}
+                                  <span style={{ display: getCourseThumbnail(course) ? 'none' : 'flex' }} className="w-full h-full items-center justify-center">
+                                    <Video className="h-12 w-12 text-muted-foreground" />
+                                  </span>
+                                </div>
+                                <CardTitle className="line-clamp-1">{course.title}</CardTitle>
+                                <CardDescription className="line-clamp-2">{course.description}</CardDescription>
+                              </CardHeader>
+                              <CardFooter className="flex justify-between">
+                                <div className="text-sm text-muted-foreground">
+                                  By {course.instructor_name}
+                                </div>
+                                <Badge className="bg-slate-900 text-slate-50 hover:bg-slate-800 border-0">{course.category}</Badge>
+                              </CardFooter>
+                            </Card>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+              </TabsContent>
+
+              <TabsContent value="my-courses" className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-bold mb-2">My Learning</h2>
+                  <p className="text-muted-foreground">Continue your enrolled courses</p>
+                </div>
+
+                {myCourses.length === 0 ? (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-12">
+                      <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
+                      <p className="text-muted-foreground">You haven&apos;t enrolled in any courses yet.</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {myCourses.map((item) => (
+                      <Card key={item.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => fetchCourseDetails(item.course_id)}>
+                        <CardHeader>
+                          <div className="aspect-video bg-slate-100 rounded-md mb-3 flex items-center justify-center overflow-hidden">
+                            {item.course?.thumbnail ? (
+                              <img src={item.course.thumbnail} alt={item.course.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <Video className="h-12 w-12 text-muted-foreground" />
+                            )}
+                          </div>
+                          <CardTitle className="line-clamp-1">{item.course?.title}</CardTitle>
+                          <CardDescription className="line-clamp-2">{item.course?.description}</CardDescription>
+                        </CardHeader>
+                        <CardFooter className="flex flex-col gap-2">
+                          <div className="w-full space-y-1">
+                            <div className="flex justify-between text-sm">
+                              <span>Progress</span>
+                              <span className="font-medium">{item.progress}%</span>
+                            </div>
+                            <Progress value={item.progress} />
+                          </div>
+                          <div className="w-full text-xs text-muted-foreground text-center">
+                            {item.completedLessons} of {item.totalLessons} lessons completed
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          )
         )}
       </main>
+
+      {/* Footer */}
+      {!showProfile && (
+        <footer className="bg-slate-50 border-t border-border mt-12 py-8">
+          <div className="container mx-auto px-4 text-center">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">LMS Marketplace</h3>
+            <p className="text-slate-500 text-sm mb-4">Empowering learners and instructors worldwide.</p>
+            <div className="text-xs text-slate-400">
+              &copy; {new Date().getFullYear()} LMS Marketplace. All rights reserved.
+            </div>
+          </div>
+        </footer>
+      )}
 
       {/* Create Course Modal */}
       <Dialog open={showCourseModal} onOpenChange={setShowCourseModal}>
