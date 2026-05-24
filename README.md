@@ -1,121 +1,141 @@
-# LMS — eLearning Marketplace
+<div align="center">
+  <img src="assets/hero_banner.png" alt="LMS Marketplace Banner" width="100%" />
+  
+  <br />
+  <br />
 
-Full-stack learning management system with separate student and instructor flows. Built with Next.js, MongoDB, and JWT authentication.
+  <h1>LMS Marketplace (v2)</h1>
+  
+  <p>
+    <strong>A next-generation, open-source Learning Management System for students and instructors.</strong>
+  </p>
+  
+  <p>
+    <a href="https://learningmarket.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-learningmarket.vercel.app-6366f1?style=for-the-badge&logo=vercel" alt="Live Demo" /></a>
+    <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+    <img src="https://img.shields.io/badge/MongoDB-Enabled-47A248?style=for-the-badge&logo=mongodb" alt="MongoDB" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS" />
+  </p>
+</div>
+
+<hr />
+
+## ✨ Features
+
+**LMS Marketplace** is split into two seamless portals, providing a dynamic experience for both learners and educators.
+
+### 🎓 For Students
+- **Explore & Enroll**: Browse a comprehensive marketplace of courses.
+- **Track Progress**: Real-time progress tracking for every enrolled course and lesson.
+- **Seamless Video Learning**: Embedded YouTube lessons for high-performance playback.
+- **Modern Dashboard**: A sleek, intuitive student portal to manage learning paths.
+
+### 👨‍🏫 For Instructors
+- **Course Creation Studio**: Build robust courses with custom thumbnails and descriptions.
+- **Curriculum Management**: Easily arrange, edit, or remove video lessons.
+- **Enrollment Analytics**: Track student enrollment metrics across your courses.
+- **Instructor Dashboard**: A powerful control center for all educator tools.
 
 ---
 
-## Features
+## 📸 Showcases
 
-**Students**
-- Browse and search course marketplace
-- Filter by category
-- Enroll in courses (free)
-- Watch embedded YouTube lessons
-- Track progress per lesson and per course
-
-**Instructors**
-- Create and manage courses
-- Add YouTube-based video lessons
-- View enrollment counts
-- Edit or delete content
+<div align="center">
+  <h3>Student Portal</h3>
+  <img src="assets/student_mockup.png" alt="Student Dashboard Mockup" width="100%" />
+  <br/><br/>
+  <h3>Instructor Dashboard</h3>
+  <img src="assets/instructor_mockup.png" alt="Instructor Dashboard Mockup" width="100%" />
+</div>
 
 ---
 
-## Stack
+## 🛠️ Technology Stack
 
-**Next.js 14 · React 18 · TailwindCSS · MongoDB · JWT · bcryptjs**
-
-UI components via shadcn/ui (Radix UI)
+| Category | Technologies |
+| --- | --- |
+| **Framework** | Next.js 14, React 18 |
+| **Styling** | Tailwind CSS, shadcn/ui (Radix) |
+| **Database** | MongoDB |
+| **Authentication** | JWT (JSON Web Tokens), bcryptjs |
 
 ---
 
-## Database Schema
+## 🗄️ Database Architecture
 
-```javascript
-// users
-{ id, name, email, password (bcrypt), role: 'student' | 'instructor', created_at }
+```mermaid
+erDiagram
+    USERS ||--o{ ENROLLMENTS : has
+    USERS ||--o{ COURSES : creates
+    COURSES ||--o{ LESSONS : contains
+    COURSES ||--o{ ENROLLMENTS : tracking
 
-// courses
-{ id, title, description, thumbnail, category, instructor_id, instructor_name, created_at }
-
-// lessons
-{ id, course_id, title, video_url, duration, order }
-
-// enrollments
-{ id, user_id, course_id, enrolled_at, completed_lessons: string[] }
+    USERS {
+        string id PK
+        string name
+        string email
+        string password
+        string role "student | instructor"
+    }
+    
+    COURSES {
+        string id PK
+        string title
+        string category
+        string instructor_id FK
+    }
+    
+    LESSONS {
+        string id PK
+        string course_id FK
+        string title
+        string video_url
+        int order
+    }
+    
+    ENROLLMENTS {
+        string id PK
+        string user_id FK
+        string course_id FK
+        string[] completed_lessons
+    }
 ```
 
 ---
 
-## API Routes
+## 🚀 Getting Started
 
-```
-POST   /api/auth/register
-POST   /api/auth/login
-GET    /api/auth/me
-
-POST   /api/courses              # instructor only
-GET    /api/courses
-GET    /api/courses/:id
-PUT    /api/courses/:id          # instructor only
-DELETE /api/courses/:id          # instructor only
-
-POST   /api/courses/:id/lessons
-GET    /api/courses/:id/lessons
-
-POST   /api/enrollments
-GET    /api/enrollments/my-courses
-GET    /api/enrollments/check
-PUT    /api/enrollments/:id/progress
-```
-
----
-
-## Setup
-
+### 1. Clone the repository
 ```bash
-# Install dependencies
-yarn install
-
-# Configure environment
-cp .env.example .env
+git clone https://github.com/AbdulWasay0029/Real-World-LMS-eLearning-Marketplace-V2.git
+cd Real-World-LMS-eLearning-Marketplace-V2
 ```
 
-`.env` variables:
+### 2. Install Dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Setup Environment Variables
+Create a `.env` file in the root directory:
 ```env
 MONGO_URL=mongodb://localhost:27017
 DB_NAME=lms_marketplace
-JWT_SECRET=your-secret-key
+JWT_SECRET=your_super_secret_key
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
+### 4. Run the Development Server
 ```bash
-# Start dev server
+npm run dev
+# or
 yarn dev
 ```
+Navigate to `http://localhost:3000` to view the application!
 
-Open `http://localhost:3000`
-
----
-
-## Project Structure
-
-```
-├── app/
-│   ├── api/[[...path]]/route.js   # All API routes
-│   ├── page.js                    # Main application
-│   ├── layout.js
-│   └── globals.css
-├── components/ui/                 # shadcn/ui components
-├── lib/utils.js
-└── .env
-```
-
----
-
-## Security
-
-- Passwords hashed with bcrypt (10 rounds)
-- JWT-based session management
-- Role-based route protection
-- Input validation and sanitization on all endpoints
+<hr />
+<div align="center">
+  <p>Built with ❤️ by Abdul Wasay</p>
+</div>
