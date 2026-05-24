@@ -42,10 +42,10 @@
 
 <div align="center">
   <h3>Student Portal</h3>
-  <img src="assets/student_mockup.png" alt="Student Dashboard Mockup" width="100%" />
+  <img src="assets/student_dashboard.png" alt="Student Dashboard" width="100%" />
   <br/><br/>
   <h3>Instructor Dashboard</h3>
-  <img src="assets/instructor_mockup.png" alt="Instructor Dashboard Mockup" width="100%" />
+  <img src="assets/instructor_dashboard.png" alt="Instructor Dashboard" width="100%" />
 </div>
 
 ---
