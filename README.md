@@ -63,43 +63,9 @@
 
 ## 🗄️ Database Architecture
 
-```mermaid
-erDiagram
-    USERS ||--o{ ENROLLMENTS : has
-    USERS ||--o{ COURSES : creates
-    COURSES ||--o{ LESSONS : contains
-    COURSES ||--o{ ENROLLMENTS : tracking
-
-    USERS {
-        string id PK
-        string name
-        string email
-        string password
-        string role "student | instructor"
-    }
-    
-    COURSES {
-        string id PK
-        string title
-        string category
-        string instructor_id FK
-    }
-    
-    LESSONS {
-        string id PK
-        string course_id FK
-        string title
-        string video_url
-        int order
-    }
-    
-    ENROLLMENTS {
-        string id PK
-        string user_id FK
-        string course_id FK
-        string[] completed_lessons
-    }
-```
+<div align="center">
+  <img src="assets/db_architecture.png" alt="Database Architecture" width="800" />
+</div>
 
 ---
 
